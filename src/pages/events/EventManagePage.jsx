@@ -126,6 +126,7 @@ function VolunteersTab({ eventId, eventStatus }) {
   const [loadingNeeds, setLoadingNeeds] = useState(true);
   const [loadingApps, setLoadingApps] = useState(true);
   const [needModal, setNeedModal] = useState(false);
+  const [editingNeed, setEditingNeed] = useState(null);
   const [needForm, setNeedForm] = useState({ roleName: '', headcount: '', description: '' });
   const [savingNeed, setSavingNeed] = useState(false);
   const [filterStatus, setFilterStatus] = useState('');
@@ -149,22 +150,41 @@ function VolunteersTab({ eventId, eventStatus }) {
 
   useEffect(() => { loadNeeds(); loadApps(); }, [eventId]);
 
-  const handleCreateNeed = async (e) => {
+  const openAddNeedModal = () => {
+    setEditingNeed(null);
+    setNeedForm({ roleName: '', headcount: '', description: '' });
+    setNeedModal(true);
+  };
+
+  const openEditNeedModal = (n) => {
+    setEditingNeed(n);
+    setNeedForm({ roleName: n.role_name, headcount: String(n.headcount ?? ''), description: n.description || '' });
+    setNeedModal(true);
+  };
+
+  const handleSaveNeed = async (e) => {
     e.preventDefault();
     if (!needForm.roleName) { useToastStore.getState().error('Role name is required.'); return; }
     setSavingNeed(true);
+    const payload = {
+      roleName: needForm.roleName,
+      headcount: needForm.headcount ? parseInt(needForm.headcount) : undefined,
+      description: needForm.description || undefined,
+    };
     try {
-      await volunteersService.createNeed(eventId, {
-        roleName: needForm.roleName,
-        headcount: needForm.headcount ? parseInt(needForm.headcount) : undefined,
-        description: needForm.description || undefined,
-      });
-      useToastStore.getState().success('Volunteer role created.');
+      if (editingNeed) {
+        await volunteersService.updateNeed(editingNeed.id, payload);
+        useToastStore.getState().success('Volunteer role updated.');
+      } else {
+        await volunteersService.createNeed(eventId, payload);
+        useToastStore.getState().success('Volunteer role created.');
+      }
       setNeedModal(false);
+      setEditingNeed(null);
       setNeedForm({ roleName: '', headcount: '', description: '' });
       loadNeeds();
     } catch (e) {
-      useToastStore.getState().error(e.response?.data?.message || 'Failed to create need.');
+      useToastStore.getState().error(e.response?.data?.message || 'Failed to save role.');
     } finally { setSavingNeed(false); }
   };
 
@@ -201,7 +221,7 @@ function VolunteersTab({ eventId, eventStatus }) {
             <div className="card-title">Volunteer Roles</div>
             <div className="card-subtitle">Define the roles you need volunteers for</div>
           </div>
-          <button className="btn btn-primary btn-sm" onClick={() => setNeedModal(true)}>+ Add Role</button>
+          <button className="btn btn-primary btn-sm" onClick={openAddNeedModal}>+ Add Role</button>
         </div>
 
         {loadingNeeds ? <PageSpinner /> : needs.length === 0 ? (
@@ -224,7 +244,10 @@ function VolunteersTab({ eventId, eventStatus }) {
                     <td>{n.filled_count ?? 0}</td>
                     <td style={{ color: 'var(--text-muted)', fontSize: 13 }}>{n.description || '—'}</td>
                     <td>
-                      <button className="btn btn-danger btn-sm" onClick={() => handleDeleteNeed(n.id)}>Delete</button>
+                      <div style={{ display: 'flex', gap: 6 }}>
+                        <button className="btn btn-secondary btn-sm" onClick={() => openEditNeedModal(n)}>Edit</button>
+                        <button className="btn btn-danger btn-sm" onClick={() => handleDeleteNeed(n.id)}>Delete</button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -316,12 +339,12 @@ function VolunteersTab({ eventId, eventStatus }) {
       <Modal
         isOpen={needModal}
         onClose={() => setNeedModal(false)}
-        title="Add Volunteer Role"
+        title={editingNeed ? 'Edit Volunteer Role' : 'Add Volunteer Role'}
         footer={
           <>
             <button className="btn btn-secondary btn-sm" onClick={() => setNeedModal(false)}>Cancel</button>
-            <button className="btn btn-primary btn-sm" onClick={handleCreateNeed} disabled={savingNeed}>
-              {savingNeed ? <Spinner size="sm" /> : 'Create Role'}
+            <button className="btn btn-primary btn-sm" onClick={handleSaveNeed} disabled={savingNeed}>
+              {savingNeed ? <Spinner size="sm" /> : editingNeed ? 'Save Changes' : 'Create Role'}
             </button>
           </>
         }

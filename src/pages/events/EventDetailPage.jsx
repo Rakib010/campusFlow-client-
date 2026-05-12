@@ -648,7 +648,7 @@ export default function EventDetailPage() {
                 <div className="event-section-card" style={{ borderColor: 'rgba(34,211,238,0.25)' }}>
                   <h3 className="event-section-title">
                     <Icon name="ticket" size={16} color="var(--accent)" />
-                    Attend This Event
+                    Attend This Event as Attendee
                   </h3>
 
                   {(() => {

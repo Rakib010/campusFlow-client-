@@ -129,7 +129,7 @@ function LbPodiumItem({ rank, item }) {
         {item.photo_url ? <img src={item.photo_url} alt={item.full_name} /> : initials(item.full_name)}
       </div>
       <div className="fb-lb-podium-name">{displayName}</div>
-      <div className="fb-lb-podium-score">{item.avg_rating}</div>
+      <div className="fb-lb-podium-score">{parseFloat(item.avg_rating).toFixed(1)}</div>
       <div className="fb-lb-podium-block" />
     </div>
   );
@@ -618,8 +618,9 @@ export default function FeedbackPage() {
         setLeaderboard(lbRes.status === 'fulfilled' ? (Array.isArray(lbRes.value) ? lbRes.value : lbRes.value?.data || []) : []);
         if (ratingsRes.status === 'fulfilled') {
           const v = ratingsRes.value;
-          setMyRatings(Array.isArray(v) ? v : v?.ratings || []);
-          setAvgRating(v?.avgRating || 0);
+          const inner = v?.data ?? v;
+          setMyRatings(Array.isArray(inner) ? inner : inner?.ratings || []);
+          setAvgRating(inner?.avgRating || 0);
         }
       } else {
         const [lbRes, volRes, evtRes] = await Promise.allSettled([

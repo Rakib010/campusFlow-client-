@@ -18,7 +18,6 @@ export default function VolunteerDashboard() {
   useEffect(() => {
     dashboardService.volunteerDashboard()
       .then((r) => setData(r.data))
-      .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
 
