@@ -1,5 +1,4 @@
 const colorMap = {
-  super_admin: 'cyan',
   admin: 'purple',
   organizer: 'amber',
   volunteer: 'green',
@@ -21,7 +20,7 @@ const colorMap = {
 };
 
 // Format a label for display: lowercase tokens like "ongoing" → "Ongoing",
-// snake_case "checked_in" → "Checked In", SCREAMING_SNAKE "SUPER_ADMIN" → "Super Admin".
+// snake_case "checked_in" → "Checked In", SCREAMING_SNAKE "ADMIN" → "Admin".
 // Codes that are already mixed-case or contain hyphens (e.g. "TKT-A4B7K9X3") are left alone.
 const formatLabel = (s) => {
   if (s == null) return s;

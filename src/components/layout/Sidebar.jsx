@@ -5,28 +5,6 @@ import AppLogo from '../ui/AppLogo.jsx';
 import Icon from '../ui/Icon.jsx';
 
 const navConfig = {
-  SUPER_ADMIN: [
-    {
-      section: 'Overview',
-      items: [
-        { to: '/dashboard', icon: 'dashboard', label: 'Dashboard' },
-        { to: '/events', icon: 'calendar', label: 'Events' },
-      ],
-    },
-    {
-      section: 'Administration',
-      items: [
-        { to: '/users', icon: 'users', label: 'Users' },
-        { to: '/users/create-admin', icon: 'plus', label: 'Create Admin' },
-      ],
-    },
-    {
-      section: 'Platform',
-      items: [
-        { to: '/profile', icon: 'user', label: 'My Profile' },
-      ],
-    },
-  ],
   ADMIN: [
     {
       section: 'Overview',
@@ -39,6 +17,7 @@ const navConfig = {
       section: 'Administration',
       items: [
         { to: '/users', icon: 'users', label: 'Users' },
+        { to: '/users/create-admin', icon: 'plus', label: 'Create Admin' },
       ],
     },
     {

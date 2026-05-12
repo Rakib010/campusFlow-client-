@@ -11,7 +11,7 @@ import useToastStore from '../../stores/useToastStore.js';
 import SelectMenu from '../../components/ui/SelectMenu.jsx';
 
 const STATUSES = ['', 'published', 'ongoing', 'completed', 'cancelled', 'draft'];
-const CAN_CREATE = ['ORGANIZER', 'ADMIN', 'SUPER_ADMIN'];
+const CAN_CREATE = ['ORGANIZER', 'ADMIN'];
 
 function fmtDate(d) {
   if (!d) return '—';

@@ -9,6 +9,7 @@ import AppLayout from './layouts/AppLayout.jsx';
 import LoginPage from './pages/auth/LoginPage.jsx';
 import RegisterPage from './pages/auth/RegisterPage.jsx';
 import ForgotPasswordPage from './pages/auth/ForgotPasswordPage.jsx';
+import ResetPasswordPage from './pages/auth/ResetPasswordPage.jsx';
 import VerifyOtpPage from './pages/auth/VerifyOtpPage.jsx';
 
 // App pages
@@ -48,6 +49,7 @@ export default function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
           </Route>
         </Route>
 
@@ -59,13 +61,13 @@ export default function App() {
             <Route path="/events" element={<EventsPage />} />
 
             {/* Specific event sub-routes must come before :id */}
-            <Route element={<RequireRole roles={['ORGANIZER', 'ADMIN', 'SUPER_ADMIN']} />}>
+            <Route element={<RequireRole roles={['ORGANIZER', 'ADMIN']} />}>
               <Route path="/events/create" element={<CreateEventPage />} />
             </Route>
 
             <Route path="/events/:id" element={<EventDetailPage />} />
 
-            <Route element={<RequireRole roles={['ORGANIZER', 'ADMIN', 'SUPER_ADMIN']} />}>
+            <Route element={<RequireRole roles={['ORGANIZER', 'ADMIN']} />}>
               <Route path="/events/:id/edit" element={<EditEventPage />} />
               <Route path="/events/:id/manage" element={<EventManagePage />} />
             </Route>
@@ -83,13 +85,9 @@ export default function App() {
             {/* Shared routes — multiple roles */}
             <Route path="/feedback" element={<FeedbackPage />} />
 
-            {/* Super admin only */}
-            <Route element={<RequireRole roles={['SUPER_ADMIN']} />}>
+            {/* Admin only */}
+            <Route element={<RequireRole roles={['ADMIN']} />}>
               <Route path="/users/create-admin" element={<CreateAdminPage />} />
-            </Route>
-
-            {/* Admin+ only */}
-            <Route element={<RequireRole roles={['ADMIN', 'SUPER_ADMIN']} />}>
               <Route path="/users" element={<UsersPage />} />
               <Route path="/users/:id" element={<UserDetailPage />} />
             </Route>

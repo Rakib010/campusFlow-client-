@@ -17,7 +17,7 @@ import useAuthStore from '../../stores/useAuthStore.js';
 import useToastStore from '../../stores/useToastStore.js';
 
 const STATUS_FLOW = { draft: 'published', published: 'ongoing', ongoing: 'completed' };
-const CAN_MANAGE = ['ORGANIZER', 'ADMIN', 'SUPER_ADMIN'];
+const CAN_MANAGE = ['ORGANIZER', 'ADMIN'];
 
 function fmtDate(d) {
   if (!d) return '—';
@@ -134,10 +134,10 @@ export default function EventDetailPage() {
   }, [id, user?.role]);
 
   const isOwner = user && event && (
-    user.role === 'ADMIN' || user.role === 'SUPER_ADMIN' || event.organizer_id === user.id
+    user.role === 'ADMIN' || event.organizer_id === user.id
   );
   const canManage = CAN_MANAGE.includes(user?.role) && isOwner;
-  const isAdmin = user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN';
+  const isAdmin = user?.role === 'ADMIN';
   const isVolunteer = user?.role === 'VOLUNTEER';
   const isAttendee = user?.role === 'ATTENDEE';
   const nextStatus = event ? STATUS_FLOW[event.status] : null;

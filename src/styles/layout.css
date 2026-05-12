@@ -27,7 +27,9 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 22px 20px 18px;
+  height: var(--topbar-height);
+  padding: 0 20px;
+  box-sizing: border-box;
   border-bottom: 1px solid rgba(15, 23, 42, 0.06);
   flex-shrink: 0;
   text-decoration: none;
@@ -322,7 +324,7 @@
 
 .auth-right {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   padding: 56px 60px;
   overflow-y: auto;

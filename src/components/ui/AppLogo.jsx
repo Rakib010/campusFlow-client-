@@ -1,9 +1,4 @@
-const LogoIcon = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-    <path d="M6 12v5c3 3 9 3 12 0v-5" />
-  </svg>
-);
+export const LOGO_URL = 'https://res.cloudinary.com/dnpun8jzt/image/upload/v1778610617/logo-campusflow_lsgadq.png';
 
 export default function AppLogo({ size = 'md', variant = 'full' }) {
   const subText = size === 'lg' ? 'University Volunteer Management' : 'UVMS';
@@ -11,10 +6,7 @@ export default function AppLogo({ size = 'md', variant = 'full' }) {
 
   return (
     <div className={`app-logo app-logo--${sz}`}>
-      {/* Icon box */}
-      <div className="app-logo__icon-box">
-        <LogoIcon className={`app-logo__icon-svg--${sz}`} />
-      </div>
+      <img src={LOGO_URL} alt="CampusFlow" className={`app-logo__img app-logo__img--${sz}`} />
 
       {variant !== 'icon-only' && (
         <div className="app-logo__text">

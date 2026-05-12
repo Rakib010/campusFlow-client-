@@ -93,7 +93,6 @@ function MenuItem({ icon, label, color, onClick }) {
 
 export default function UsersPage() {
   const [users, setUsers] = useState([]);
-  const [superAdmins, setSuperAdmins] = useState([]);
   const [pagination, setPagination] = useState({ page: 1, totalPages: 1, total: 0 });
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -112,13 +111,9 @@ export default function UsersPage() {
     if (role) params.role = role;
     if (statusFilter) params.isActive = statusFilter;
 
-    Promise.all([
-      usersService.listUsers(params),
-      usersService.listUsers({ role: 'SUPER_ADMIN', limit: 10 }),
-    ])
-      .then(([main, sa]) => {
+    usersService.listUsers(params)
+      .then((main) => {
         setUsers(main.data || []);
-        setSuperAdmins(sa.data || []);
         if (main.pagination) {
           setPagination({ ...main.pagination, totalPages: main.pagination.pages || 1 });
         }
@@ -172,49 +167,6 @@ export default function UsersPage() {
             </div>
           </div>
         </div>
-
-        {/* System Administrators panel */}
-        {superAdmins.length > 0 && (
-          <div style={{
-            background: 'linear-gradient(135deg, rgba(139,92,246,0.07) 0%, rgba(168,85,247,0.04) 100%)',
-            border: '1px solid rgba(139,92,246,0.18)',
-            borderRadius: 12,
-            padding: '16px 20px',
-            marginBottom: 20,
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-              <Icon name="shield" size={15} color="rgba(139,92,246,0.9)" />
-              <span style={{ fontSize: 13, fontWeight: 600, color: 'rgba(139,92,246,0.9)', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
-                System Administrators
-              </span>
-            </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
-              {superAdmins.map((u) => {
-                const name = u.full_name || u.email?.split('@')[0] || 'Unknown';
-                return (
-                  <div
-                    key={u.id}
-                    style={{
-                      display: 'flex', alignItems: 'center', gap: 10,
-                      background: 'rgba(255,255,255,0.7)',
-                      border: '1px solid rgba(139,92,246,0.14)',
-                      borderRadius: 10, padding: '10px 14px',
-                      cursor: 'pointer',
-                    }}
-                    onClick={() => navigate(`/users/${u.id}`)}
-                  >
-                    <Avatar name={name} src={u.photo_url} size="sm" />
-                    <div>
-                      <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>{name}</div>
-                      <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>{u.email}</div>
-                    </div>
-                    <Badge label="super_admin" />
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
 
         {/* Filters */}
         <div className="filter-bar" style={{ flexWrap: 'wrap', gap: 10 }}>

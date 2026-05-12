@@ -12,7 +12,7 @@ import useToastStore from '../../stores/useToastStore.js';
 
 const SKILLS = ['Technical', 'Design', 'Management', 'Marketing', 'Communication', 'Photography', 'Logistics', 'IT Support'];
 
-const isStaff = (role) => role === 'ADMIN' || role === 'SUPER_ADMIN';
+const isStaff = (role) => role === 'ADMIN';
 const isOrganizer = (role) => role === 'ORGANIZER';
 
 export default function ProfilePage() {
@@ -304,7 +304,7 @@ export default function ProfilePage() {
                       </div>
                     </div>
 
-                    {/* Personal info — hidden for ADMIN / SUPER_ADMIN */}
+                    {/* Personal info — hidden for ADMIN */}
                     {!staff && (
                       <div className="profile-section">
                         <div className="profile-section__head">

@@ -12,7 +12,7 @@ import { feedbackService } from '../../services/feedback.service.js';
 import useAuthStore from '../../stores/useAuthStore.js';
 import useToastStore from '../../stores/useToastStore.js';
 
-const ROLES = ['ATTENDEE', 'VOLUNTEER', 'ORGANIZER', 'ADMIN', 'SUPER_ADMIN'];
+const ROLES = ['ATTENDEE', 'VOLUNTEER', 'ORGANIZER', 'ADMIN'];
 
 function InfoRow({ label, value }) {
   return (
@@ -33,7 +33,7 @@ export default function UserDetailPage() {
   const { user: me } = useAuthStore();
   const toast = useToastStore();
   const navigate = useNavigate();
-  const isSuperAdmin = me?.role === 'SUPER_ADMIN';
+  const isAdmin = me?.role === 'ADMIN';
   const isSelf = me?.id === id;
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export default function UserDetailPage() {
         setUser(u);
         // Fetch ratings if relevant
         const fetcher = u.role === 'VOLUNTEER' ? feedbackService.getVolunteerRatings(id)
-                      : (u.role === 'ORGANIZER' || u.role === 'ADMIN' || u.role === 'SUPER_ADMIN') ? feedbackService.getOrganizerRatings(id)
+                      : (u.role === 'ORGANIZER' || u.role === 'ADMIN') ? feedbackService.getOrganizerRatings(id)
                       : null;
         if (fetcher) {
           fetcher.then((rr) => {
@@ -125,12 +125,10 @@ export default function UserDetailPage() {
           {user.role === 'ORGANIZER' && !user.is_approved && (
             <button className="btn btn-success btn-sm" onClick={handleApprove}>Approve Organizer</button>
           )}
-          {user.role !== 'SUPER_ADMIN' && (
-            <button
-              className={`btn btn-sm ${user.is_active ? 'btn-danger' : 'btn-success'}`}
-              onClick={handleToggleActive}
-            >{user.is_active ? 'Deactivate' : 'Activate'}</button>
-          )}
+          <button
+            className={`btn btn-sm ${user.is_active ? 'btn-danger' : 'btn-success'}`}
+            onClick={handleToggleActive}
+          >{user.is_active ? 'Deactivate' : 'Activate'}</button>
         </div>
 
         <div className="content-grid">
@@ -166,8 +164,8 @@ export default function UserDetailPage() {
             <InfoRow label="Active" value={<Badge label={user.is_active ? 'Active' : 'Inactive'} color={user.is_active ? 'green' : 'red'} />} />
             <InfoRow label="Member since" value={user.created_at ? new Date(user.created_at).toLocaleDateString() : '—'} />
 
-            {/* Super-admin-only: change role */}
-            {isSuperAdmin && !isSelf && (
+            {/* Admin: change role */}
+            {isAdmin && !isSelf && (
               <div style={{
                 marginTop: 18,
                 padding: 14,
@@ -177,10 +175,10 @@ export default function UserDetailPage() {
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
                   <Icon name="shield" size={16} color="var(--purple-400)" />
-                  <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--purple-400)' }}>Super Admin · Change Role</div>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--purple-400)' }}>Change Role</div>
                 </div>
                 <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 10, lineHeight: 1.5 }}>
-                  Promote or demote this user. Promoting to Organizer auto-approves; promoting to Admin/Super Admin also marks email verified.
+                  Promote or demote this user. Promoting to Organizer auto-approves; promoting to Admin also marks email verified.
                 </div>
                 <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
                   <select
@@ -200,7 +198,7 @@ export default function UserDetailPage() {
                 </div>
               </div>
             )}
-            {isSelf && me?.role === 'SUPER_ADMIN' && (
+            {isSelf && isAdmin && (
               <div style={{ marginTop: 14, fontSize: 12, color: 'var(--text-muted)', fontStyle: 'italic' }}>
                 You can't change your own role.
               </div>
@@ -235,7 +233,7 @@ export default function UserDetailPage() {
               : ''
           }
           confirmText={changingRole ? 'Changing…' : 'Change Role'}
-          danger={pendingRole === 'ADMIN' || pendingRole === 'SUPER_ADMIN'}
+          danger={pendingRole === 'ADMIN'}
         />
       </div>
     </>

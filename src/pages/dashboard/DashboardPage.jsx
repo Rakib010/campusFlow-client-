@@ -8,7 +8,7 @@ export default function DashboardPage() {
   const { user } = useAuthStore();
   const role = user?.role;
 
-  if (role === 'SUPER_ADMIN' || role === 'ADMIN') return <AdminDashboard />;
+  if (role === 'ADMIN') return <AdminDashboard />;
   if (role === 'ORGANIZER') return <OrganizerDashboard />;
   if (role === 'VOLUNTEER') return <VolunteerDashboard />;
   return <AttendeeDashboard />;

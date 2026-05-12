@@ -8,14 +8,10 @@
   text-decoration: none;
 }
 
-.app-logo__icon-box {
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.app-logo__img {
+  display: block;
   flex-shrink: 0;
-  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 60%, #7e22ce 100%);
-  box-shadow: 0 0 16px rgba(168, 85, 247, 0.28), 0 2px 8px rgba(2, 6, 23, 0.12);
+  object-fit: contain;
 }
 
 .app-logo__text {
@@ -40,21 +36,16 @@
 
 /* Sizes */
 .app-logo--sm { gap: 8px; }
-.app-logo--sm .app-logo__icon-box { width: 32px; height: 32px; }
+.app-logo--sm .app-logo__img { width: 32px; height: 32px; }
 .app-logo--sm .app-logo__name { font-size: 14px; }
 .app-logo--sm .app-logo__sub { font-size: 9px; }
 
 .app-logo--md { gap: 10px; }
-.app-logo--md .app-logo__icon-box { width: 36px; height: 36px; }
+.app-logo--md .app-logo__img { width: 36px; height: 36px; }
 .app-logo--md .app-logo__name { font-size: 16px; }
 .app-logo--md .app-logo__sub { font-size: 10px; }
 
 .app-logo--lg { gap: 12px; }
-.app-logo--lg .app-logo__icon-box { width: 46px; height: 46px; }
+.app-logo--lg .app-logo__img { width: 46px; height: 46px; }
 .app-logo--lg .app-logo__name { font-size: 22px; }
 .app-logo--lg .app-logo__sub { font-size: 11px; }
-
-.app-logo__icon-svg--sm { width: 18px; height: 18px; }
-.app-logo__icon-svg--md { width: 20px; height: 20px; }
-.app-logo__icon-svg--lg { width: 26px; height: 26px; }
-

@@ -52,27 +52,31 @@ export default function ForgotPasswordPage() {
           <Link to="/login" className="btn btn-secondary btn-sm" style={{ display: 'inline-flex', marginTop: 20 }}>Back to login</Link>
         </div>
       ) : (
-        <form className="auth-form" onSubmit={handleSubmit}>
-          <div className="input-wrap">
-            <label className="input-label" htmlFor="email">Email address</label>
-            <input
-              id="email"
-              type="email"
-              className="input-field"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <button type="submit" className="btn btn-primary btn-full" disabled={loading}>
-            {loading ? <Spinner size="sm" /> : 'Send reset link'}
-          </button>
-        </form>
-      )}
+        <>
+          <form className="auth-form" onSubmit={handleSubmit}>
+            <div className="input-wrap">
+              <label className="input-label" htmlFor="email">Email address</label>
+              <input
+                id="email"
+                type="email"
+                className="input-field"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <button type="submit" className="btn btn-primary btn-full" disabled={loading}>
+              {loading ? <Spinner size="sm" /> : 'Send reset link'}
+            </button>
+          </form>
 
-      <div className="auth-footer">
-        <Link to="/login">← Back to login</Link>
-      </div>
+          <div className="auth-footer">
+            <Link to="/login" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+              <Icon name="arrowLeft" size={14} /> Back to login
+            </Link>
+          </div>
+        </>
+      )}
     </div>
   );
 }
