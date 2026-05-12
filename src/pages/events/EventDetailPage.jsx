@@ -544,16 +544,11 @@ export default function EventDetailPage() {
                     Volunteer
                   </h3>
 
-                  {/* Application deadline countdown — inline, contextual */}
+                  {/* Application deadline — static date */}
                   {!myApplication && event.volunteer_registration_deadline && (event.status === 'published' || event.status === 'ongoing') && (
-                    <div style={{ marginBottom: 14 }}>
-                      <Countdown
-                        target={event.volunteer_registration_deadline}
-                        variant="deadline"
-                        label="Applications close in"
-                        expiredLabel="Applications closed"
-                        size="sm"
-                      />
+                    <div style={{ marginBottom: 14, fontSize: 13, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <Icon name="clock" size={13} />
+                      Applications close on {fmtDate(event.volunteer_registration_deadline)} at {fmtTime(event.volunteer_registration_deadline)}
                     </div>
                   )}
 

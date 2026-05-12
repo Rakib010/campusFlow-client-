@@ -287,7 +287,7 @@ function VolunteersTab({ eventId, eventStatus }) {
           <div className="table-wrap">
             <table>
               <thead>
-                <tr><th>Volunteer</th><th>Role</th><th>Status</th><th>Applied</th><th>Actions</th></tr>
+                <tr><th>Volunteer</th><th>Role</th><th>Avg. Rating</th><th>Total Events</th><th>Status</th><th>Applied</th><th>Actions</th></tr>
               </thead>
               <tbody>
                 {filteredApps.map((app) => (
@@ -299,6 +299,17 @@ function VolunteersTab({ eventId, eventStatus }) {
                       <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{app.email || app.volunteer_email}</div>
                     </td>
                     <td style={{ fontSize: 13, color: 'var(--text-muted)' }}>{app.role_name || '—'}</td>
+                    <td style={{ fontSize: 13 }}>
+                      {app.total_ratings > 0 ? (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                          <Icon name="starFilled" size={12} style={{ color: '#f59e0b' }} />
+                          <strong style={{ color: 'var(--text-primary)' }}>{Number(app.avg_rating).toFixed(1)}</strong>
+                        </div>
+                      ) : (
+                        <span style={{ color: 'var(--text-muted)', fontSize: 12 }}>No ratings</span>
+                      )}
+                    </td>
+                    <td style={{ fontSize: 13, color: 'var(--text-muted)' }}>{app.events_count || 0}</td>
                     <td>
                       <Badge label={app.status} color={app.status === 'approved' ? 'green' : app.status === 'rejected' ? 'red' : 'amber'} />
                     </td>
